@@ -21,23 +21,26 @@ const UpdatePrompt = () => {
   });
 
   useEffect(() => {
+    console.log("efect kepanggil");
     const fetchPost = async () => {
+      console.log("get kepanggil");
       const response = await fetch(`/api/prompt/${promptId}`);
       const data = await response.json();
-      console.log(" fetchPost ~ data", data);
+      // console.log(" fetchPost ~ data", data);
       setPost(data);
     };
 
-    if (session?.user.id === post?.creator?._id) {
+    if (promptId) {
       fetchPost();
     }
-  });
+  }, []);
 
   const editPrompt = async (e) => {
     e.preventDefault();
     setSubmitting(true);
 
     try {
+      console.log(post.tags);
       const response = await fetch(`/api/prompt/${promptId}`, {
         method: "PATCH",
 
@@ -48,7 +51,7 @@ const UpdatePrompt = () => {
       });
 
       if (response.ok) {
-        router.push("/");
+        router.push("/profile");
       }
     } catch (e) {
       console.log(e);

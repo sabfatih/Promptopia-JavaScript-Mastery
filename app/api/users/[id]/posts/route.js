@@ -2,7 +2,7 @@ import { connectToDB } from "@utils/db";
 import Prompt from "@app/models/Prompt";
 
 export const GET = async (req, { params }) => {
-  const userId = params.id;
+  const { id: userId } = await params;
 
   try {
     await connectToDB();

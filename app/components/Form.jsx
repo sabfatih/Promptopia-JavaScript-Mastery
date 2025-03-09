@@ -1,8 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import Link from "@node_modules/next/link";
+import { useRouter } from "@node_modules/next/navigation";
 
 const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
+  const router = useRouter();
   const [tag, setTag] = useState("");
 
   const handleTagInput = (e) => {
@@ -65,15 +67,19 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
             value={tag}
             onChange={(e) => setTag(e.target.value)}
             onKeyDown={(e) => handleTagInput(e)}
-            name="tag-input"
+            id="tag-input" // need an id, not a name
             placeholder="product, idea, recipe, etc"
             className="form_input"
           />
         </div>
         <div className="flex-end mx-3 mb-5 gap-4">
-          <Link href={"/"} className="text-gray-500 text-sm">
+          <button
+            type="button"
+            onClick={() => router.back()}
+            className="text-gray-500 text-sm"
+          >
             Cancel
-          </Link>
+          </button>
           <button
             type="submit"
             disabled={submitting}

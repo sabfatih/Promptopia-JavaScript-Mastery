@@ -3,7 +3,7 @@ import Prompt from "@app/models/Prompt";
 
 // GET
 export const GET = async (req, { params }) => {
-  const promptId = await params.id;
+  const { id: promptId } = await params;
 
   try {
     await connectToDB();
@@ -22,17 +22,18 @@ export const GET = async (req, { params }) => {
 
 // PATCH
 export const PATCH = async (req, { params }) => {
-  const { prompt, tag } = await req.json();
+  const { prompt, tags } = await req.json();
 
+  const { id: promptId } = await params;
   try {
     await connectToDB();
 
-    const existingPrompt = await Prompt.findById(params.id);
+    const existingPrompt = await Prompt.findById(promptId);
 
     if (existingPrompt) {
       const newPrompt = await Prompt.findByIdAndUpdate(
-        params.id,
-        { prompt, tag },
+        promptId,
+        { prompt, tags },
         { new: true, runValidators: true }
       );
 
@@ -47,13 +48,15 @@ export const PATCH = async (req, { params }) => {
 
 // DELETE
 export const DELETE = async (req, { params }) => {
+  const { id: promptId } = await params;
+
   try {
     await connectToDB();
 
-    const existingPrompt = await Prompt.findById(params.id);
+    const existingPrompt = await Prompt.findById(promptId);
 
     if (existingPrompt) {
-      await Prompt.findByIdAndDelete(params.id);
+      await Prompt.findByIdAndDelete(promptId);
 
       return new Response("Prompt deleted successfully", { status: 200 });
     } else {
