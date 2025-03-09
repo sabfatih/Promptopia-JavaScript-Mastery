@@ -106,11 +106,11 @@ const Tags = ({ tags, setPost }) => {
   };
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-2 my-2">
       {tags.map((tag, i) => (
         <div
           key={i}
-          className="rounded-2xl shadow px-2.5 py-1.5 my-2 flex gap-2 w-fit bg-white"
+          className="rounded-2xl shadow px-2.5 py-1.5 flex gap-2 w-fit bg-white"
         >
           <p className="text-sm text-gray-900 my-auto">{tag}</p>
           <button

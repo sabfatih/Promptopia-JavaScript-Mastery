@@ -1,9 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "@node_modules/next/image";
 import { useSession } from "@node_modules/next-auth/react";
 import { usePathname, useRouter } from "@node_modules/next/navigation";
-import Link from "@node_modules/next/link";
 
 const PromptCard = ({ post, handleEdit, handleDelete }) => {
   const { data: session } = useSession();
@@ -55,13 +54,12 @@ const PromptCard = ({ post, handleEdit, handleDelete }) => {
         <p className="my-4 font-satoshi text-sm text-gray-700">{post.prompt}</p>
         <div className="flex gap-3 flex-wrap w-full">
           {post.tags.map((tag) => (
-            <Link
-              href={`/tag/${tag}`}
+            <button
               key={tag}
               className="font-inter text-sm hover:underline cursor-pointer text-cyan-600"
             >
               #{tag}
-            </Link>
+            </button>
           ))}
         </div>
 
