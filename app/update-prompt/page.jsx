@@ -1,0 +1,75 @@
+"use client";
+import { useEffect, useState } from "react";
+import { useSession } from "@node_modules/next-auth/react";
+import { useRouter, useSearchParams } from "@node_modules/next/navigation";
+import Form from "@app/components/Form";
+const UpdatePrompt = () => {
+  const searchParams = useSearchParams();
+  const promptId = searchParams.get("id");
+
+  const session = useSession().data;
+  const router = useRouter();
+
+  const [submitting, setSubmitting] = useState(false);
+  const [post, setPost] = useState({
+    prompt: "",
+    tags: [],
+    creator: {
+      username: "",
+      email: "",
+    },
+  });
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      const response = await fetch(`/api/prompt/${promptId}`);
+      const data = await response.json();
+      console.log(" fetchPost ~ data", data);
+      setPost(data);
+    };
+
+    if (session?.user.id === post?.creator?._id) {
+      fetchPost();
+    }
+  });
+
+  const editPrompt = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+
+    try {
+      const response = await fetch(`/api/prompt/${promptId}`, {
+        method: "PATCH",
+
+        body: JSON.stringify({
+          prompt: post.prompt,
+          tags: post.tags,
+        }),
+      });
+
+      if (response.ok) {
+        router.push("/");
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  {
+    return (
+      session?.user.id === post?.creator?._id && (
+        <Form
+          type="Edit"
+          post={post}
+          setPost={setPost}
+          submitting={submitting}
+          handleSubmit={editPrompt}
+        />
+      )
+    );
+  }
+};
+
+export default UpdatePrompt;

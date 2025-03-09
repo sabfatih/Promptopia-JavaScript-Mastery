@@ -11,14 +11,14 @@ const Feed = () => {
   };
 
   useEffect(() => {
-    const fetchPost = async () => {
+    const fetchPosts = async () => {
       const response = await fetch("/api/prompt");
       const data = await response.json();
 
       setPosts(data);
     };
 
-    fetchPost();
+    fetchPosts();
   }, []);
 
   return (
@@ -34,23 +34,11 @@ const Feed = () => {
         />
       </form>
 
-      <PromptCardList data={posts} handleTagClick={() => {}} />
+      <div className="mt-16 prompt_layout">
+        {posts &&
+          posts.map((post) => <PromptCard key={post._id} post={post} />)}
+      </div>
     </section>
-  );
-};
-
-const PromptCardList = ({ data, handleTagClick }) => {
-  return (
-    <div className="mt-16 prompt_layout">
-      {data &&
-        data.map((post) => (
-          <PromptCard
-            key={post._id}
-            post={post}
-            handleTagClick={handleTagClick}
-          />
-        ))}
-    </div>
   );
 };
 

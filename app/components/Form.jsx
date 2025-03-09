@@ -1,20 +1,27 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Link from "@node_modules/next/link";
 
 const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
+  const [tag, setTag] = useState("");
+
   const handleTagInput = (e) => {
-    if (e.key === "Enter" && e.target.value.trim() != "") {
-      const tag = e.target.value;
+    const regex = /^[A-Za-z\s]+$/;
+
+    if (e.key === "Enter" && tag.trim() != "") {
       e.preventDefault();
 
       setPost((prev) => {
-        if (prev.tags.includes(tag)) {
+        if (prev.tags.includes(tag) || !regex.test(tag)) {
           return prev;
         } else {
-          return { ...prev, tags: [...prev.tags, tag] };
+          return {
+            ...prev,
+            tags: [...prev.tags, tag.toLowerCase().replace(" ", "-")],
+          };
         }
       });
-      e.target.value = "";
+      setTag("");
     }
   };
 
@@ -47,19 +54,22 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
             className="form_textarea"
           ></textarea>
         </label>
-        <label>
-          <span className="font_satoshi font-semibold text-base text-gray-700">
-            Tags
-          </span>
-          <div className="flex flex-wrap gap-2">
-            <Tags post={post} setPost={setPost} />
-          </div>
+        <div>
+          <label htmlFor="tag-input">
+            <span className="font_satoshi font-semibold text-base text-gray-700">
+              Tags
+            </span>
+          </label>
+          <Tags tags={post.tags} setPost={setPost} />
           <input
+            value={tag}
+            onChange={(e) => setTag(e.target.value)}
             onKeyDown={(e) => handleTagInput(e)}
+            name="tag-input"
             placeholder="product, idea, recipe, etc"
             className="form_input"
           />
-        </label>
+        </div>
         <div className="flex-end mx-3 mb-5 gap-4">
           <Link href={"/"} className="text-gray-500 text-sm">
             Cancel
@@ -77,35 +87,42 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
   );
 };
 
-const Tags = ({ post, setPost }) => {
-  const tags = post.tags;
+const Tags = ({ tags, setPost }) => {
+  const handleClose = (e, i) => {
+    e.preventDefault();
 
-  return tags.map((tag, i) => (
-    <div
-      key={i}
-      className="rounded-2xl shadow px-2.5 py-1.5 my-2 flex gap-1 w-fit bg-white"
-    >
-      <p className="text-sm text-gray-900 my-auto">{tag}</p>
-      <button
-        type="button"
-        className="my-auto cursor-pointer rounded-full"
-        onClick={(e) => {
-          e.preventDefault();
-          setPost((prev) => {
-            return {
-              ...prev,
-              tags: prev.tags.filter((_, index) => index != i),
-            };
-          });
-        }}
-      >
-        <CloseButton />
-      </button>
+    setPost((prev) => {
+      return {
+        ...prev,
+        tags: prev.tags.filter((_, index) => index !== i),
+      };
+    });
+  };
+
+  return (
+    <div className="flex flex-wrap gap-2">
+      {tags.map((tag, i) => (
+        <div
+          key={i}
+          className="rounded-2xl shadow px-2.5 py-1.5 my-2 flex gap-2 w-fit bg-white"
+        >
+          <p className="text-sm text-gray-900 my-auto">{tag}</p>
+          <button
+            type="button"
+            className="my-auto cursor-pointer"
+            onClick={(e) => {
+              handleClose(e, i);
+            }}
+          >
+            <IconCloseButton />
+          </button>
+        </div>
+      ))}
     </div>
-  ));
+  );
 };
 
-const CloseButton = () => {
+const IconCloseButton = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +130,7 @@ const CloseButton = () => {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className="size-4 m-auto"
+      className="size-4 m-auto "
     >
       <path
         strokeLinecap="round"
