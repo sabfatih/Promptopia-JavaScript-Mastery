@@ -33,16 +33,24 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
         </label>
         <label>
           <span className="font_satoshi font-semibold text-base text-gray-700">
-            Tag <span className="font-normal">(#product, #idea, #recipe)</span>
+            Tags
           </span>
+          <div className="flex flex-wrap gap-2">
+            <Tags post={post} setPost={setPost} />
+          </div>
           <input
-            value={post.tag}
-            onChange={(e) =>
-              setPost((prev) => {
-                return { ...prev, tag: e.target.value };
-              })
-            }
-            placeholder="#tag"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && e.target.value.trim() != "") {
+                const tag = e.target.value;
+                e.preventDefault();
+
+                setPost((prev) => {
+                  return { ...prev, tags: [...prev.tags, tag] };
+                });
+                e.target.value = "";
+              }
+            }}
+            placeholder="product, idea, recipe, etc"
             className="form_input"
           />
         </label>
@@ -60,6 +68,52 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
         </div>
       </form>
     </section>
+  );
+};
+
+const Tags = ({ post, setPost }) => {
+  const tags = post.tags;
+
+  return tags.map((tag, i) => (
+    <div
+      key={i}
+      className="rounded-2xl shadow px-2.5 py-1.5 my-2 flex gap-1 w-fit bg-white"
+    >
+      <p className="text-sm text-gray-900 my-auto">{tag}</p>
+      <button
+        type="button"
+        className="my-auto cursor-pointer rounded-full"
+        onClick={() => {
+          setPost((prev) => {
+            return {
+              ...prev,
+              tags: prev.tags.filter((_, index) => index != i),
+            };
+          });
+        }}
+      >
+        <CloseButton />
+      </button>
+    </div>
+  ));
+};
+
+const CloseButton = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
+      className="size-4 m-auto"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M6 18 18 6M6 6l12 12"
+      />
+    </svg>
   );
 };
 

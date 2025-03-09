@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "@node_modules/next-auth/react";
 import { useRouter } from "@node_modules/next/navigation";
 
@@ -13,7 +13,7 @@ const CreatePrompt = () => {
   const [submitting, setSubmitting] = useState(false);
   const [post, setPost] = useState({
     prompt: "",
-    tag: "",
+    tags: [],
   });
 
   const createPrompt = async (e) => {
@@ -28,7 +28,7 @@ const CreatePrompt = () => {
           userId: session?.user.id,
           prompt: post.prompt,
 
-          tag: post.tag,
+          tags: post.tags,
         }),
       });
 
