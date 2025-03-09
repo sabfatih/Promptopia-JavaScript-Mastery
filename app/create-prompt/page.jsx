@@ -16,6 +16,10 @@ const CreatePrompt = () => {
     tags: [],
   });
 
+  // useEffect(() => {
+  //   console.log(post.tags);
+  // }, [post]);
+
   const createPrompt = async (e) => {
     e.preventDefault();
     setSubmitting(true);

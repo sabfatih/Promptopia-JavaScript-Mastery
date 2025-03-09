@@ -2,6 +2,22 @@ import React from "react";
 import Link from "@node_modules/next/link";
 
 const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
+  const handleTagInput = (e) => {
+    if (e.key === "Enter" && e.target.value.trim() != "") {
+      const tag = e.target.value;
+      e.preventDefault();
+
+      setPost((prev) => {
+        if (prev.tags.includes(tag)) {
+          return prev;
+        } else {
+          return { ...prev, tags: [...prev.tags, tag] };
+        }
+      });
+      e.target.value = "";
+    }
+  };
+
   return (
     <section className="w-full max-w-full flex-start flex-col">
       <h1 className="head_text text-left">
@@ -39,17 +55,7 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
             <Tags post={post} setPost={setPost} />
           </div>
           <input
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && e.target.value.trim() != "") {
-                const tag = e.target.value;
-                e.preventDefault();
-
-                setPost((prev) => {
-                  return { ...prev, tags: [...prev.tags, tag] };
-                });
-                e.target.value = "";
-              }
-            }}
+            onKeyDown={(e) => handleTagInput(e)}
             placeholder="product, idea, recipe, etc"
             className="form_input"
           />
@@ -83,7 +89,8 @@ const Tags = ({ post, setPost }) => {
       <button
         type="button"
         className="my-auto cursor-pointer rounded-full"
-        onClick={() => {
+        onClick={(e) => {
+          e.preventDefault();
           setPost((prev) => {
             return {
               ...prev,
