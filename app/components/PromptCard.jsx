@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Image from "@node_modules/next/image";
 import { useSession } from "@node_modules/next-auth/react";
 import { usePathname, useRouter } from "@node_modules/next/navigation";
+import Link from "@node_modules/next/link";
 
 const PromptCard = ({ post, handleEdit, handleDelete, setSearchQuery }) => {
   const { data: session } = useSession();
@@ -21,7 +22,11 @@ const PromptCard = ({ post, handleEdit, handleDelete, setSearchQuery }) => {
     post && (
       <div className="prompt_card">
         <div className="flex justify-between items-start gap-5">
-          <div className="flex-1 flex justify-start items-center gap-3 cursor-pointer">
+          {/* creator */}
+          <Link
+            href={`/profile/${post.creator._id}`}
+            className="flex-1 flex justify-start items-center gap-3 cursor-pointer"
+          >
             <Image
               src={post.creator.image}
               alt="User Image"
@@ -37,7 +42,8 @@ const PromptCard = ({ post, handleEdit, handleDelete, setSearchQuery }) => {
                 {post.creator.email}
               </p>
             </div>
-          </div>
+          </Link>
+          {/* prompt */}
           <div className="copy_btn" onClick={handleCopy}>
             <Image
               src={
@@ -54,13 +60,14 @@ const PromptCard = ({ post, handleEdit, handleDelete, setSearchQuery }) => {
         <p className="my-4 font-satoshi text-sm text-gray-700">{post.prompt}</p>
         <div className="flex gap-3 flex-wrap w-full">
           {post.tags.map((tag) => (
-            <button
+            <a
+              href="#searchBar"
               key={tag}
               onClick={() => setSearchQuery(tag)}
               className="font-inter text-sm hover:underline cursor-pointer text-cyan-600"
             >
               #{tag}
-            </button>
+            </a>
           ))}
         </div>
 

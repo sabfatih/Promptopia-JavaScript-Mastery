@@ -57,7 +57,7 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
           ></textarea>
         </label>
         <div>
-          <label htmlFor="tag-input">
+          <label htmlFor="tagInput">
             <span className="font_satoshi font-semibold text-base text-gray-700">
               Tags
             </span>
@@ -67,7 +67,7 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
             value={tag}
             onChange={(e) => setTag(e.target.value)}
             onKeyDown={(e) => handleTagInput(e)}
-            id="tag-input" // need an id, not a name
+            id="tagInput" // need an id, not a name
             name="tagInput"
             placeholder="product, idea, recipe, etc"
             autoComplete="off"
@@ -117,7 +117,7 @@ const Tags = ({ tags, setPost }) => {
           <p className="text-sm text-gray-900 my-auto">{tag}</p>
           <button
             type="button"
-            className="my-auto cursor-pointer"
+            className="my-auto cursor-pointer size-4"
             onClick={(e) => {
               handleClose(e, i);
             }}
@@ -130,7 +130,7 @@ const Tags = ({ tags, setPost }) => {
   );
 };
 
-const IconCloseButton = () => {
+export const IconCloseButton = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -138,7 +138,7 @@ const IconCloseButton = () => {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className="size-4 m-auto "
+      className="size-full m-auto "
     >
       <path
         strokeLinecap="round"

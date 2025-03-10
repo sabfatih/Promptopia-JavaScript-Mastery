@@ -21,9 +21,7 @@ const UpdatePrompt = () => {
   });
 
   useEffect(() => {
-    console.log("efect kepanggil");
     const fetchPost = async () => {
-      console.log("get kepanggil");
       const response = await fetch(`/api/prompt/${promptId}`);
       const data = await response.json();
       // console.log(" fetchPost ~ data", data);

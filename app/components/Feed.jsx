@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import PromptCard from "./PromptCard";
+import { IconCloseButton } from "./Form";
 
 const Feed = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -57,16 +58,25 @@ const Feed = () => {
 
   return (
     <section className="feed">
-      <form className="relative w-full flex-center">
+      <label className="relative w-full flex-center search_input cursor-text">
         <input
           type="text"
+          id="searchBar"
           placeholder="Search prompts here"
           value={searchQuery}
           onChange={handleSearchChange}
           required
-          className="search_input peer"
+          className="w-full peer font-satoshi text-sm font-medium focus:outline-none focus:ring-0"
         />
-      </form>
+        {searchQuery && (
+          <button
+            className="size-5 cursor-pointer"
+            onClick={() => setSearchQuery("")}
+          >
+            <IconCloseButton />
+          </button>
+        )}
+      </label>
 
       <div className="mt-16 prompt_layout">
         {posts &&
