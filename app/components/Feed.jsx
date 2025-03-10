@@ -65,6 +65,7 @@ const Feed = () => {
           placeholder="Search prompts here"
           value={searchQuery}
           onChange={handleSearchChange}
+          autoComplete="off"
           required
           className="w-full peer font-satoshi text-sm font-medium focus:outline-none focus:ring-0"
         />

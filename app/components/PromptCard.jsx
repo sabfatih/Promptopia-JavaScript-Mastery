@@ -2,13 +2,12 @@
 import React, { useState } from "react";
 import Image from "@node_modules/next/image";
 import { useSession } from "@node_modules/next-auth/react";
-import { usePathname, useRouter } from "@node_modules/next/navigation";
+import { usePathname } from "@node_modules/next/navigation";
 import Link from "@node_modules/next/link";
 
 const PromptCard = ({ post, handleEdit, handleDelete, setSearchQuery }) => {
   const { data: session } = useSession();
   const pathName = usePathname();
-  const router = useRouter();
 
   const [copied, setCopied] = useState("");
 
@@ -61,7 +60,7 @@ const PromptCard = ({ post, handleEdit, handleDelete, setSearchQuery }) => {
         <div className="flex gap-3 flex-wrap w-full">
           {post.tags.map((tag) => (
             <a
-              href="#searchBar"
+              href={"#searchBar"}
               key={tag}
               onClick={() => setSearchQuery(tag)}
               className="font-inter text-sm hover:underline cursor-pointer text-cyan-600"
@@ -71,22 +70,23 @@ const PromptCard = ({ post, handleEdit, handleDelete, setSearchQuery }) => {
           ))}
         </div>
 
-        {session?.user.id === post.creator._id && pathName === "/profile" && (
-          <div className="mt-5 flex-center gap-4 border-t border-gray-100 pt-3">
-            <p
-              className="font-inter text-sm green_gradient cursor-pointer"
-              onClick={() => handleEdit(post)}
-            >
-              Edit
-            </p>
-            <p
-              className="font-inter text-sm orange_gradient cursor-pointer"
-              onClick={() => handleDelete(post)}
-            >
-              Delete
-            </p>
-          </div>
-        )}
+        {session?.user.id === post.creator._id &&
+          pathName.startsWith("/profile/") && (
+            <div className="mt-5 flex-center gap-4 border-t border-gray-100 pt-3">
+              <p
+                className="font-inter text-sm green_gradient cursor-pointer"
+                onClick={() => handleEdit(post)}
+              >
+                Edit
+              </p>
+              <p
+                className="font-inter text-sm orange_gradient cursor-pointer"
+                onClick={() => handleDelete(post)}
+              >
+                Delete
+              </p>
+            </div>
+          )}
       </div>
     )
   );
