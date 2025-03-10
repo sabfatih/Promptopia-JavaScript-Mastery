@@ -21,6 +21,7 @@ const CreatePrompt = () => {
   // }, [post]);
 
   const createPrompt = async (e) => {
+    const inputtedTag = e.target.tagInput.value;
     e.preventDefault();
     setSubmitting(true);
 
@@ -31,7 +32,9 @@ const CreatePrompt = () => {
         body: JSON.stringify({
           userId: session?.user.id,
           prompt: post.prompt,
-          tags: post.tags,
+          tags: inputtedTag
+            ? [...post.tags, inputtedTag.toLowerCase().replace(" ", "-")]
+            : post.tags,
         }),
       });
 

@@ -14,15 +14,17 @@ const MyProfile = () => {
     router.push(`/update-prompt?id=${postId}`);
   };
 
-  const handleDelete = async (post) => {
+  const handleDelete = async (postId) => {
     const hasConfirmed = confirm("Are you sure want to delete this prompt?");
 
     if (hasConfirmed) {
       try {
-        await fetch(`/api/prompt/${post._id.toString()}`, {
+        await fetch(`/api/prompt/${postId.toString()}`, {
           method: "DELETE",
         });
-        setPosts((prev) => prev.filter((p) => p._id !== post._id));
+        setPosts((prev) =>
+          prev.filter((p) => p._id.toString() !== postId.toString())
+        );
       } catch (e) {
         console.log(e);
       }

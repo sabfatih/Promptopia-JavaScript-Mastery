@@ -4,7 +4,7 @@ import Image from "@node_modules/next/image";
 import { useSession } from "@node_modules/next-auth/react";
 import { usePathname, useRouter } from "@node_modules/next/navigation";
 
-const PromptCard = ({ post, handleEdit, handleDelete }) => {
+const PromptCard = ({ post, handleEdit, handleDelete, setSearchQuery }) => {
   const { data: session } = useSession();
   const pathName = usePathname();
   const router = useRouter();
@@ -56,6 +56,7 @@ const PromptCard = ({ post, handleEdit, handleDelete }) => {
           {post.tags.map((tag) => (
             <button
               key={tag}
+              onClick={() => setSearchQuery(tag)}
               className="font-inter text-sm hover:underline cursor-pointer text-cyan-600"
             >
               #{tag}

@@ -68,7 +68,9 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
             onChange={(e) => setTag(e.target.value)}
             onKeyDown={(e) => handleTagInput(e)}
             id="tag-input" // need an id, not a name
+            name="tagInput"
             placeholder="product, idea, recipe, etc"
+            autoComplete="off"
             className="form_input"
           />
         </div>
